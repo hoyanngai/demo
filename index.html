@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Demo</title>
+    <link rel="stylesheet" href="src/output.css" />
+  </head>
+  <body class="overflow-hidden">
+    <div
+      class="flex min-h-[100vh] flex-col items-center justify-center bg-gradient-to-r from-primary to-secondary"
+    >
+      <div class="mx-auto max-w-md text-center">
+        <h1
+          class="absolute mt-4 text-6xl font-bold tracking-tight text-primary-foreground sm:text-6xl cursor-default"
+        >
+          Demo
+        </h1>
+      </div>
+    </div>
+    <script>
+      document.addEventListener("mousemove", function (event) {
+        var x = event.clientX;
+        var y = event.clientY;
+        var h1 = document.querySelector("h1");
+        h1.style.left = x - h1.offsetWidth / 2 + "px";
+        h1.style.top = y - h1.offsetHeight + "px";
+      });
+
+      document.querySelector("h1").addEventListener("click", function () {
+        this.style.transition = "transform 1s ease";
+        var rotation = getComputedStyle(this).getPropertyValue("transform");
+        if (rotation === "none") {
+          this.style.transform = "rotate(360deg)";
+        } else {
+          this.style.transform = "none";
+        }
+      });
+
+      var colors = ["#FFCCCC", "#FFDDCC", "#FFEACC", "#FFF9CC"]; // Define the colors you want to transition between
+      var currentIndex = 0; // Start with the first color
+
+      function changeBackgroundColor() {
+        document.body.style.transition = "background-color 1s ease"; // Set the transition duration and easing
+        document.body.style.backgroundColor = colors[currentIndex]; // Change the background color
+
+        currentIndex = (currentIndex + 1) % colors.length; // Move to the next color in the array
+      }
+
+      setInterval(changeBackgroundColor, 2000); // Call the function every 2 seconds (adjust the interval as needed)
+    </script>
+  </body>
+</html>
