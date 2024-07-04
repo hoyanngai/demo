@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>PDF.js Demo</title>
+    <style>
+      body {
+        margin: 0;
+      }
+      #pdf-container {
+        width: 100%;
+        overflow: auto;
+      }
+      button {
+        position: fixed;
+        top: 2rem;
+        right: 2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="pdf-container"></div>
+    <button onclick="downloadPDF()">Download PDF</button>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+    <script>
+      // Fetch the PDF document
+      const url = "demo.pdf";
+      // Load and render the PDF
+      pdfjsLib.getDocument(url).promise.then((pdf) => {
+        const pageNumber = 1; // Change this to the desired page number
+        pdf.getPage(pageNumber).then((page) => {
+          const canvas = document.createElement("canvas");
+          const context = canvas.getContext("2d");
+          const viewport = page.getViewport({ scale: 2 });
+          canvas.width = viewport.width;
+          canvas.height = viewport.height;
+          const renderContext = {
+            canvasContext: context,
+            viewport: viewport,
+          };
+          page.render(renderContext).promise.then(() => {
+            document.getElementById("pdf-container").appendChild(canvas);
+          });
+        });
+      });
+      function downloadPDF() {
+        const url = "demo.pdf"; // Replace with the URL of the PDF file
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "demo.pdf";
+        link.target = "_blank";
+        link.click();
+      }
+    </script>
+  </body>
+</html>
