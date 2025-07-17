@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TRAILD - PDF Embed Demo</title>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+      .pdfobject-container {
+        height: 100vh;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="my-pdf"></div>
+    <script src="https://unpkg.com/pdfobject"></script>
+    <script>
+      PDFObject.embed(
+        "https://trialddev.wpenginepowered.com/wp-content/uploads/2025/05/TRAILD-Data-Processing-Agreement-Final.pdf",
+        "#my-pdf"
+      );
+    </script>
+  </body>
+</html>
