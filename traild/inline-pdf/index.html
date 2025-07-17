@@ -7,19 +7,55 @@
     <style>
       body {
         margin: 0;
-        overflow: hidden;
       }
-      .pdfobject-container {
+      .container {
+        display: flex;
+        flex-direction: column;
         height: 100vh;
+      }
+      header,
+      footer {
+        padding: 2rem;
+        background: #ccc;
+      }
+      main {
+        display: flex;
+        flex: 1;
+      }
+      aside {
+        width: 25%;
+        padding: 2em;
+      }
+      article {
+        width: 75%;
+      }
+      #my-pdf {
+        height: 100%;
+      }
+      h1,
+      h2,
+      h3 {
+        margin: 0;
       }
     </style>
   </head>
   <body>
-    <div id="my-pdf"></div>
+    <div class="container">
+      <header><h1>Header goes here</h1></header>
+      <main>
+        <aside>
+          <h3>Sidebar content goes here</h3>
+        </aside>
+        <article>
+          <div id="my-pdf"></div>
+        </article>
+      </main>
+      <footer><h2>Footer goes here</h2></footer>
+    </div>
     <script src="https://unpkg.com/pdfobject"></script>
     <script>
       PDFObject.embed(
-        "https://trialddev.wpenginepowered.com/wp-content/uploads/2025/05/TRAILD-Data-Processing-Agreement-Final.pdf",
+        "https://trialddev.wpenginepowered.com/wp-content/uploads/2025/05/TRAILD-Data-Processing-Agreement-Final.pdf#navpanes=0",
         "#my-pdf"
       );
     </script>
