@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>TRAILD - PDF Embed Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      body {
+        margin: 0;
+        font-family: sans-serif;
+      }
+      #pdf-container {
+        width: 100%;
+        overflow: auto;
+      }
+      button {
+        position: fixed;
+        top: 2rem;
+        right: 2rem;
+      }
+      .container {
+        padding-left: 4rem;
+        padding-right: 4rem;
+        margin: 0 auto;
+        max-width: 1200px;
+      }
+      header,
+      footer {
+        padding: 4rem;
+        background: #222;
+        color: #fff;
+        text-align: center;
+        /* Removed position: sticky and z-index for non-fixed header/footer */
+      }
+      /* Removed header { top: 0; } and footer { bottom: 0; } */
+    </style>
+  </head>
+  <body>
+    <header>Header goes here</header>
+    <div class="container">
+      <div id="pdf-container"></div>
+    </div>
+    <!-- <button onclick="downloadPDF()">Download PDF</button> -->
+    <footer>Footer goes here</footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+    <script>
+      // Fetch the PDF document
+      const url = "TRAILD-Data-Processing-Agreement-Final.pdf";
+      let pdfDoc = null;
+      let pageCanvases = [];
+      function renderPDF() {
+        const container = document.getElementById("pdf-container");
+        container.innerHTML = "";
+        const containerWidth = container.offsetWidth;
+        if (!pdfDoc) return;
+        for (let pageNumber = 1; pageNumber <= pdfDoc.numPages; pageNumber++) {
+          pdfDoc.getPage(pageNumber).then((page) => {
+            const viewport = page.getViewport({ scale: 1 });
+            const scale = containerWidth / viewport.width;
+            const scaledViewport = page.getViewport({ scale });
+            const canvas = document.createElement("canvas");
+            const context = canvas.getContext("2d");
+            canvas.width = scaledViewport.width;
+            canvas.height = scaledViewport.height;
+            const renderContext = {
+              canvasContext: context,
+              viewport: scaledViewport,
+            };
+            page.render(renderContext).promise.then(() => {
+              container.appendChild(canvas);
+            });
+          });
+        }
+      }
+      pdfjsLib.getDocument(url).promise.then((pdf) => {
+        pdfDoc = pdf;
+        renderPDF();
+      });
+      window.addEventListener("resize", renderPDF);
+      //   function downloadPDF() {
+      //     const url = "TRAILD-Data-Processing-Agreement-Final.pdf"; // Replace with the URL of the PDF file
+      //     const link = document.createElement("a");
+      //     link.href = url;
+      //     link.download = "TRAILD-Data-Processing-Agreement-Final.pdf";
+      //     link.target = "_blank";
+      //     link.click();
+      //   }
+    </script>
+  </body>
+</html>
