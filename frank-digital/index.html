@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Manrope:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-secondary-fixed": "#181c21",
+              "on-primary-fixed": "#3f0300",
+              "tertiary": "#5c5c5c",
+              "surface-container-high": "#e5e8ef",
+              "surface-container": "#ebeef5",
+              "secondary": "#5b5f64",
+              "outline-variant": "#e5beb6",
+              "on-tertiary": "#ffffff",
+              "tertiary-container": "#757474",
+              "tertiary-fixed": "#e4e2e2",
+              "inverse-primary": "#ffb4a6",
+              "on-primary-fixed-variant": "#900f00",
+              "secondary-fixed-dim": "#c3c6cd",
+              "on-tertiary-fixed": "#1b1c1c",
+              "on-error-container": "#93000a",
+              "on-surface-variant": "#5c403b",
+              "on-tertiary-fixed-variant": "#464747",
+              "primary-fixed": "#ffdad3",
+              "primary-container": "#dc3219",
+              "surface-bright": "#f7f9ff",
+              "surface": "#f7f9ff",
+              "on-secondary": "#ffffff",
+              "surface-tint": "#bb1801",
+              "on-secondary-container": "#5f6369",
+              "tertiary-fixed-dim": "#c7c6c6",
+              "surface-container-lowest": "#ffffff",
+              "on-secondary-fixed-variant": "#43474d",
+              "surface-container-low": "#f1f4fb",
+              "surface-variant": "#e0e2e9",
+              "secondary-fixed": "#e0e2e9",
+              "inverse-on-surface": "#eef1f8",
+              "error-container": "#ffdad6",
+              "on-background": "#181c21",
+              "primary": "#b71600",
+              "inverse-surface": "#2d3136",
+              "surface-container-highest": "#e0e2e9",
+              "on-primary": "#ffffff",
+              "on-tertiary-container": "#fefcfc",
+              "on-primary-container": "#fffbff",
+              "outline": "#906f69",
+              "error": "#ba1a1a",
+              "on-surface": "#181c21",
+              "on-error": "#ffffff",
+              "primary-fixed-dim": "#ffb4a6",
+              "secondary-container": "#dde0e7",
+              "background": "#f7f9ff",
+              "surface-dim": "#d7dae1"
+            },
+            fontFamily: {
+              "headline": ["Plus Jakarta Sans"],
+              "body": ["Manrope"],
+              "label": ["Manrope"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+      @keyframes reveal {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .reveal {
+        animation: reveal 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+      .glass-card {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+      }
+      .project-card:hover .project-overlay {
+        background: rgba(183, 22, 0, 0.85);
+      }
+      .nav-link {
+        position: relative;
+        transition: color 0.3s ease;
+      }
+      .nav-link::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: -4px;
+        left: 0;
+        background-color: currentColor;
+        transition: width 0.3s ease;
+      }
+      .nav-link:hover::after {
+        width: 100%;
+      }
+      .reveal-on-scroll {
+        opacity: 0;
+        transform: translateY(40px);
+        transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .reveal-on-scroll.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-primary-fixed selection:text-primary overflow-x-hidden">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-white/70 backdrop-blur-2xl border-b border-neutral-100">
+<div class="flex justify-between items-center h-20 px-8 md:px-16 max-w-[1920px] mx-auto">
+<div class="text-2xl font-extrabold tracking-tighter text-neutral-900 font-headline flex items-center gap-2">
+<span class="w-2 h-2 bg-primary rounded-full"></span>
+            Frank Digital
+        </div>
+<div class="hidden md:flex items-center gap-10 font-headline font-semibold tracking-tight text-sm uppercase">
+<a class="nav-link text-primary" href="#">Services</a>
+<a class="nav-link text-neutral-600 hover:text-neutral-900" href="#">Work</a>
+<a class="nav-link text-neutral-600 hover:text-neutral-900" href="#">Agency</a>
+<a class="nav-link text-neutral-600 hover:text-neutral-900" href="#">Contact</a>
+</div>
+<div class="flex items-center">
+<button class="relative group overflow-hidden bg-on-background text-white px-7 py-3 rounded-full font-headline font-bold text-xs tracking-widest uppercase transition-all duration-300 hover:pr-10">
+<span class="relative z-10">Start a Project</span>
+<span class="absolute right-4 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 material-symbols-outlined text-sm">arrow_right_alt</span>
+</button>
+</div>
+</div>
+</nav>
+<!-- Hero Section -->
+<header class="relative min-h-screen flex items-center pt-20 px-8 md:px-16 overflow-hidden bg-neutral-950">
+<div class="absolute inset-0 z-0">
+<div class="absolute inset-0 bg-gradient-to-r from-neutral-950 via-neutral-950/40 to-transparent z-10"></div>
+<img alt="Digital innovation background" class="w-full h-full object-cover opacity-50 scale-105" data-alt="Abstract digital futuristic workspace high tech" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAH2hvO4TM2dd89H2CRXbJ8qlfM6K6BE31NBEwc3nYHMiYsvHsA_5xreZgFTelFsTOW5E3589pWqmeO3vX5LBsmVc1Yk0VOCbMGR373X4e0iEggAv2qiC03pazmGrlseW57ygC8OVrUjPu34RIShZIvifMNq_jjftz3tJIKkynSI3IkLL2c60qOaKYYPVPuYi05n8EI3RlQpaDuRmXsm8xLFXwu1p5j-AV7EhH7zmftl8D3ZlgsJHWxUlccx8wvOPdjNLBo1_6WjoM"/>
+</div>
+<div class="relative z-20 max-w-6xl reveal">
+<div class="flex items-center gap-4 mb-10">
+<span class="h-px w-12 bg-primary"></span>
+<span class="text-white font-label text-xs uppercase tracking-[0.4em]">Experience Design Studio</span>
+</div>
+<h1 class="text-white font-headline font-extrabold text-6xl md:text-[clamp(4rem,8vw,10rem)] leading-[0.9] tracking-tighter mb-12">
+            Experience for the <br/>
+<span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary-container">Modern Brand.</span>
+</h1>
+<p class="text-white/70 font-body text-xl md:text-2xl max-w-2xl leading-relaxed mb-16">
+            We craft beautiful digital products and experiences that help brands lead in a connected world. Restrained, intentional, and architecturally sound.
+        </p>
+<div class="flex flex-col sm:flex-row gap-8">
+<button class="bg-primary text-white px-10 py-6 rounded-full font-headline font-bold text-sm tracking-widest uppercase hover:bg-primary-container transition-all duration-300 flex items-center justify-center gap-4 group">
+                View selected work
+                <span class="material-symbols-outlined transition-transform group-hover:translate-x-1">north_east</span>
+</button>
+<button class="border border-white/30 text-white px-10 py-6 rounded-full font-headline font-bold text-sm tracking-widest uppercase hover:bg-white hover:text-neutral-950 transition-all duration-500">
+                Our approach
+            </button>
+</div>
+</div>
+</header>
+<!-- Services Overview -->
+<section class="py-32 md:py-48 bg-white overflow-hidden">
+<div class="max-w-[1920px] mx-auto px-8 md:px-16">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-20 mb-32 items-end reveal-on-scroll">
+<div class="lg:col-span-7">
+<label class="font-label text-primary font-bold tracking-[0.3em] uppercase text-[10px] mb-6 block">Our Expertise</label>
+<h2 class="font-headline font-bold text-5xl md:text-8xl text-neutral-900 tracking-tighter leading-tight">
+                    Architecting the <br/>future of digital.
+                </h2>
+</div>
+<div class="lg:col-span-5 pb-4">
+<p class="text-secondary font-body text-xl leading-relaxed max-w-md">
+                    From strategy to execution, we combine technical precision with creative flair to build products that resonate deeply with users.
+                </p>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+<!-- Strategy Card -->
+<div class="group relative p-12 bg-neutral-50 rounded-xl transition-all duration-700 hover:-translate-y-4 hover:shadow-2xl hover:shadow-primary/5 reveal-on-scroll">
+<div class="mb-12 flex justify-between items-start">
+<span class="material-symbols-outlined text-primary text-5xl transition-transform duration-500 group-hover:scale-110" data-weight="fill">architecture</span>
+<span class="text-neutral-200 font-headline font-black text-6xl">01</span>
+</div>
+<h3 class="font-headline font-bold text-3xl mb-6 text-neutral-900">Digital Strategy</h3>
+<p class="text-secondary text-lg leading-relaxed mb-10">Defining the path forward with data-driven insights and market-leading intelligence.</p>
+<div class="space-y-4">
+<div class="flex items-center gap-3 text-sm font-bold uppercase tracking-widest text-neutral-400">
+<span class="w-1.5 h-1.5 rounded-full bg-primary/40"></span>
+                        Brand Positioning
+                    </div>
+<div class="flex items-center gap-3 text-sm font-bold uppercase tracking-widest text-neutral-400">
+<span class="w-1.5 h-1.5 rounded-full bg-primary/40"></span>
+                        Market Analysis
+                    </div>
+<div class="flex items-center gap-3 text-sm font-bold uppercase tracking-widest text-neutral-400">
+<span class="w-1.5 h-1.5 rounded-full bg-primary/40"></span>
+                        Product Roadmaps
+                    </div>
+</div>
+</div>
+<!-- UX/UI Card -->
+<div class="group relative p-12 bg-neutral-50 rounded-xl transition-all duration-700 hover:-translate-y-4 hover:shadow-2xl hover:shadow-primary/5 reveal-on-scroll">
+<div class="mb-12 flex justify-between items-start">
+<span class="material-symbols-outlined text-primary text-5xl transition-transform duration-500 group-hover:scale-110" data-weight="fill">grid_view</span>
+<span class="text-neutral-200 font-headline font-black text-6xl">02</span>
+</div>
+<h3 class="font-headline font-bold text-3xl mb-6 text-neutral-900">UX/UI Design</h3>
+<p class="text-secondary text-lg leading-relaxed mb-10">Crafting interfaces that feel natural, effortless, and aesthetically superior.</p>
+<div class="space-y-4">
+<div class="flex items-center gap-3 text-sm font-bold uppercase tracking-widest text-neutral-400">
+<span class="w-1.5 h-1.5 rounded-full bg-primary/40"></span>
+                        Experience Design
+                    </div>
+<div class="flex items-center gap-3 text-sm font-bold uppercase tracking-widest text-neutral-400">
+<span class="w-1.5 h-1.5 rounded-full bg-primary/40"></span>
+                        Visual Identity
+                    </div>
+<div class="flex items-center gap-3 text-sm font-bold uppercase tracking-widest text-neutral-400">
+<span class="w-1.5 h-1.5 rounded-full bg-primary/40"></span>
+                        Prototyping
+                    </div>
+</div>
+</div>
+<!-- Engineering Card -->
+<div class="group relative p-12 bg-neutral-50 rounded-xl transition-all duration-700 hover:-translate-y-4 hover:shadow-2xl hover:shadow-primary/5 reveal-on-scroll">
+<div class="mb-12 flex justify-between items-start">
+<span class="material-symbols-outlined text-primary text-5xl transition-transform duration-500 group-hover:scale-110" data-weight="fill">terminal</span>
+<span class="text-neutral-200 font-headline font-black text-6xl">03</span>
+</div>
+<h3 class="font-headline font-bold text-3xl mb-6 text-neutral-900">Development</h3>
+<p class="text-secondary text-lg leading-relaxed mb-10">Building robust, scalable architectures with cutting-edge front and back-end tech.</p>
+<div class="space-y-4">
+<div class="flex items-center gap-3 text-sm font-bold uppercase tracking-widest text-neutral-400">
+<span class="w-1.5 h-1.5 rounded-full bg-primary/40"></span>
+                        Full-stack Engineering
+                    </div>
+<div class="flex items-center gap-3 text-sm font-bold uppercase tracking-widest text-neutral-400">
+<span class="w-1.5 h-1.5 rounded-full bg-primary/40"></span>
+                        API Integrations
+                    </div>
+<div class="flex items-center gap-3 text-sm font-bold uppercase tracking-widest text-neutral-400">
+<span class="w-1.5 h-1.5 rounded-full bg-primary/40"></span>
+                        Performance Tuning
+                    </div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Featured Projects -->
+<section class="bg-neutral-950 py-32 md:py-48">
+<div class="max-w-[1920px] mx-auto px-8 md:px-16 mb-24 reveal-on-scroll">
+<div class="flex flex-col md:flex-row justify-between items-end gap-12">
+<div>
+<label class="font-label text-primary font-bold tracking-[0.4em] uppercase text-[10px] mb-6 block">Case Studies</label>
+<h2 class="text-white font-headline font-bold text-6xl md:text-9xl tracking-tighter leading-[0.85]">Selected<br/>Work.</h2>
+</div>
+<a class="group flex items-center gap-4 text-white font-headline font-bold uppercase tracking-widest text-xs border border-white/20 rounded-full px-8 py-4 hover:bg-white hover:text-neutral-950 transition-all duration-500" href="#">
+                Explore full portfolio
+                <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2">
+<!-- Project 1 -->
+<div class="relative aspect-[4/5] md:aspect-square overflow-hidden group project-card reveal-on-scroll">
+<img alt="Project one" class="w-full h-full object-cover grayscale transition-all duration-1000 group-hover:scale-110 group-hover:grayscale-0" data-alt="Modern minimal dashboard software interface display" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBV96hPgtuZzfWb_IlFTWWiY_EH6GZonib_g1zJVl2FO6Xh_Gv7ZMky8rA3MwUevsY6Y_hNNkHGyB8pQS6GMeNXFLNwgsCPc4C24Ftg-sHTfgdYLVq2rypkkf4PX6Tom2txmWc5TxJvfcwVnpxflSz8gbuywciiGvH2AwgpHXLBjK2_2gLBvvHcH5n9sqfgElHKYf6yZTtDxyASPEpmUDz1hbRIn_tB8G65FwURaln1oAW2q9qbwf09sR2rrwDa_VhJRjHDnR9OnsY"/>
+<div class="absolute inset-0 bg-neutral-950/40 group-hover:bg-primary/80 transition-all duration-700 project-overlay"></div>
+<div class="absolute inset-0 p-12 md:p-20 flex flex-col justify-end">
+<div class="translate-y-12 group-hover:translate-y-0 transition-transform duration-700">
+<span class="text-white/60 font-label uppercase tracking-[0.4em] text-[10px] mb-6 block">Fintech / 2024</span>
+<h3 class="text-white font-headline font-bold text-4xl md:text-6xl tracking-tight mb-8">Vanguard Asset Management</h3>
+<div class="opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-100">
+<p class="text-white/80 max-w-sm font-body text-lg mb-10">A complete reimagining of digital wealth for the next generation of investors.</p>
+<button class="flex items-center gap-3 text-white font-bold uppercase tracking-[0.2em] text-[10px] group/btn">
+                            View Case Study
+                            <span class="w-12 h-px bg-white transition-all group-hover/btn:w-20"></span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Project 2 -->
+<div class="relative aspect-[4/5] md:aspect-square overflow-hidden group project-card reveal-on-scroll" style="transition-delay: 200ms;">
+<img alt="Project two" class="w-full h-full object-cover grayscale transition-all duration-1000 group-hover:scale-110 group-hover:grayscale-0" data-alt="Sleek laptop on white marble table" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDTgj2lj4muFyOxHC4RlBN1u9SPy-78CHfI-fBhhKwh1ICPVYnSVOwO_vR66HPI-54BksQbal_J2pKjDIGQMzOcZlckxQUafbC0379z3px2UU2vCntdOyoGrs7YWU_9tv6q2wHeC5DLexZSGxfvnGjzyxG9qN3RyqLPeN9s3_QAGgkFFHT_uk9Iluq4orF2YFZ7ZGTRm4fDWQ3UXuEIP6Xonlm12F1Myu5j3vJ_ghRgqk7xHZNgE9CgWH4KpayaiFhhN-AhKofg-qg"/>
+<div class="absolute inset-0 bg-neutral-950/40 group-hover:bg-primary/80 transition-all duration-700 project-overlay"></div>
+<div class="absolute inset-0 p-12 md:p-20 flex flex-col justify-end">
+<div class="translate-y-12 group-hover:translate-y-0 transition-transform duration-700">
+<span class="text-white/60 font-label uppercase tracking-[0.4em] text-[10px] mb-6 block">E-Commerce / 2023</span>
+<h3 class="text-white font-headline font-bold text-4xl md:text-6xl tracking-tight mb-8">Lumina Luxury Retail</h3>
+<div class="opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-100">
+<p class="text-white/80 max-w-sm font-body text-lg mb-10">Elevating the shopping experience with immersive editorial storytelling.</p>
+<button class="flex items-center gap-3 text-white font-bold uppercase tracking-[0.2em] text-[10px] group/btn">
+                            View Case Study
+                            <span class="w-12 h-px bg-white transition-all group-hover/btn:w-20"></span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Client Social Proof -->
+<section class="py-32 bg-white border-y border-neutral-100">
+<div class="max-w-[1920px] mx-auto px-8 md:px-16">
+<p class="text-center font-label text-[10px] uppercase tracking-[0.5em] text-neutral-400 mb-20">Strategic Partnerships</p>
+<div class="flex flex-wrap justify-around items-center gap-16 md:gap-24 grayscale opacity-40 hover:grayscale-0 transition-all duration-700">
+<div class="text-3xl font-black font-headline text-neutral-950 tracking-tighter">COCA-COLA</div>
+<div class="text-3xl font-black font-headline text-neutral-950 tracking-tighter">NESTLÉ</div>
+<div class="text-3xl font-black font-headline text-neutral-950 tracking-tighter">VODAFONE</div>
+<div class="text-3xl font-black font-headline text-neutral-950 tracking-tighter">REXEL</div>
+<div class="text-3xl font-black font-headline text-neutral-950 tracking-tighter">SYDNEY WATER</div>
+</div>
+</div>
+</section>
+<!-- Thought Leadership -->
+<section class="py-32 md:py-48 bg-neutral-50">
+<div class="max-w-[1920px] mx-auto px-8 md:px-16">
+<div class="mb-24 flex justify-between items-end reveal-on-scroll">
+<div>
+<label class="font-label text-primary font-bold tracking-[0.3em] uppercase text-[10px] mb-6 block">Intellect</label>
+<h2 class="font-headline font-bold text-5xl md:text-7xl text-neutral-900 tracking-tighter">Latest Insights.</h2>
+</div>
+<div class="h-px bg-neutral-200 flex-grow mx-16 hidden lg:block"></div>
+<a class="text-neutral-400 font-bold uppercase tracking-widest text-xs hover:text-primary transition-colors" href="#">See all stories</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-16">
+<article class="group cursor-pointer reveal-on-scroll">
+<div class="aspect-[4/3] overflow-hidden mb-10 rounded-2xl relative">
+<img alt="Blog post 1" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" data-alt="Close up of high quality UI design elements" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQFpryKN-CYeWGNsyBPK3Oi9SYdE6Xy1KvzkDZ1R7Dwuf-F_hT12SBtBrLpSob0AJLbdY_K9qw2FdAyxg6X4IBk3INjLYGIRxUup2_Vf139qd6XtTf6eHF1SrJajQdCZ2jRB0LMkRW71KtgbqN2ijdAOim8K0N7wtPW6D-P_c538V7LAZYp08IYeEowjSVsK1OkT281bL07H30fEQmOiJrP9wBWJK2YlMKHrOyl9JyLc0LPPylddZown-wZFUCJP3GLN6Gd78qIiM"/>
+<div class="absolute top-6 left-6">
+<span class="bg-white/90 backdrop-blur-md px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest text-neutral-900">Trends</span>
+</div>
+</div>
+<h4 class="font-headline font-bold text-2xl mb-6 text-neutral-900 leading-tight group-hover:text-primary transition-colors">The Return of Skeuomorphism in 2024.</h4>
+<p class="text-secondary text-base leading-relaxed mb-8">Exploring why tactile elements are making a comeback in modern digital interfaces and why users crave the touch of reality.</p>
+<div class="flex items-center gap-2 font-bold text-[10px] uppercase tracking-widest text-neutral-400 group-hover:text-neutral-950 transition-colors">
+                    Read Story
+                    <span class="material-symbols-outlined text-sm">trending_flat</span>
+</div>
+</article>
+<article class="group cursor-pointer reveal-on-scroll" style="transition-delay: 150ms;">
+<div class="aspect-[4/3] overflow-hidden mb-10 rounded-2xl relative">
+<img alt="Blog post 2" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" data-alt="AI neural network visualization abstract" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDDqCWSCSTo8Ft36funw8c9Dun-L0nNTcVZtE8eBbFXJBZWDeF0f7wpBEALWDb4SsN3tTL8qguJqOCzC53HbSvX9iL_y4L1JUIBaNXkWZg3ZGPe4Np_7PyI0iK9oMWCu-SMo9kSsi9RFd0eHnFd-axva8uprWRRVC_PYE-VBGkmEK8Q-1yJVjZLWGP072MLRL4sYysJ6AGm6RHTGFsZ8kCP-e2hySKKO2DjoF7NiCyWYxCTwU7Rolun_RCugA3xHkORdkizxjVVwMc"/>
+<div class="absolute top-6 left-6">
+<span class="bg-white/90 backdrop-blur-md px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest text-neutral-900">Tech</span>
+</div>
+</div>
+<h4 class="font-headline font-bold text-2xl mb-6 text-neutral-900 leading-tight group-hover:text-primary transition-colors">Leveraging AI for Personalized User Flows.</h4>
+<p class="text-secondary text-base leading-relaxed mb-8">How machine learning is fundamentally changing the way we think about the 'happy path' in UX design and product development.</p>
+<div class="flex items-center gap-2 font-bold text-[10px] uppercase tracking-widest text-neutral-400 group-hover:text-neutral-950 transition-colors">
+                    Read Story
+                    <span class="material-symbols-outlined text-sm">trending_flat</span>
+</div>
+</article>
+<article class="group cursor-pointer reveal-on-scroll" style="transition-delay: 300ms;">
+<div class="aspect-[4/3] overflow-hidden mb-10 rounded-2xl relative">
+<img alt="Blog post 3" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" data-alt="Team collaborating in a modern studio space" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9s73vaPFFZusunIXGjoQMw2RdjSZL6VapiNCwU4CoxuBcZTf6nA4XudopzYY1f7cGPhTI04D2srgkaQo5tf0O7HJWPOrnd2cWEbTZ66DFAg4QGq1Q6S1sguaUdM31kIky10wwjyfWjm6W3bD2w9aoHXdvVLYCqwuYZmCBL2ittxAtYKvNFBhEF9id7DEDr9Jm84yWhQBFJtrlrWpA79pSpUoPtQEPCvfS6b4Xa1cDgCCHey1vH-ei37rTNmYFHkGtURZpQZXP3sA"/>
+<div class="absolute top-6 left-6">
+<span class="bg-white/90 backdrop-blur-md px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest text-neutral-900">Culture</span>
+</div>
+</div>
+<h4 class="font-headline font-bold text-2xl mb-6 text-neutral-900 leading-tight group-hover:text-primary transition-colors">Building a Remote-First Design Culture.</h4>
+<p class="text-secondary text-base leading-relaxed mb-8">Practical lessons from leading a global team of specialists through complex transformations while maintaining creative energy.</p>
+<div class="flex items-center gap-2 font-bold text-[10px] uppercase tracking-widest text-neutral-400 group-hover:text-neutral-950 transition-colors">
+                    Read Story
+                    <span class="material-symbols-outlined text-sm">trending_flat</span>
+</div>
+</article>
+</div>
+</div>
+</section>
+<!-- Contact CTA -->
+<section class="relative py-48 md:py-72 bg-neutral-950 overflow-hidden">
+<div class="absolute top-0 left-0 w-full h-full pointer-events-none">
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/20 rounded-full blur-[160px]"></div>
+</div>
+<div class="relative z-10 max-w-[1920px] mx-auto px-8 md:px-16 text-center reveal-on-scroll">
+<label class="font-label text-primary font-bold tracking-[0.5em] uppercase text-xs mb-10 block">Start a project</label>
+<h2 class="text-white font-headline font-extrabold text-5xl md:text-[8vw] leading-[0.85] tracking-[ -0.05em] mb-20 max-w-6xl mx-auto">
+            Ready to start a conversation?
+        </h2>
+<div class="flex justify-center">
+<a class="relative group inline-flex items-center gap-6 bg-white text-neutral-950 px-16 py-8 rounded-full font-headline font-bold text-xl hover:bg-primary hover:text-white transition-all duration-500 shadow-2xl shadow-white/10" href="#">
+                Work with us
+                <span class="material-symbols-outlined text-3xl group-hover:translate-x-3 transition-transform duration-500">east</span>
+</a>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-white w-full py-20 px-8 md:px-16 border-t border-neutral-100">
+<div class="max-w-[1920px] mx-auto">
+<div class="flex flex-col lg:flex-row justify-between items-start gap-20 mb-32">
+<div class="max-w-xs">
+<div class="text-3xl font-extrabold tracking-tighter text-neutral-900 font-headline mb-8 flex items-center gap-2">
+<span class="w-2 h-2 bg-primary rounded-full"></span>
+                    Frank Digital
+                </div>
+<p class="text-secondary text-sm leading-relaxed">
+                    Award-winning independent agency creating premium digital experiences for global brands.
+                </p>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-3 gap-20">
+<div class="space-y-6">
+<h5 class="font-headline font-bold text-xs uppercase tracking-widest text-neutral-400">Navigation</h5>
+<ul class="space-y-4 font-bold text-sm">
+<li><a class="hover:text-primary transition-colors" href="#">Services</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Work</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Agency</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Careers</a></li>
+</ul>
+</div>
+<div class="space-y-6">
+<h5 class="font-headline font-bold text-xs uppercase tracking-widest text-neutral-400">Connect</h5>
+<ul class="space-y-4 font-bold text-sm">
+<li><a class="hover:text-primary transition-colors" href="#">LinkedIn</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Instagram</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Twitter</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Dribbble</a></li>
+</ul>
+</div>
+<div class="space-y-6 col-span-2 md:col-span-1">
+<h5 class="font-headline font-bold text-xs uppercase tracking-widest text-neutral-400">Offices</h5>
+<ul class="space-y-4 font-bold text-sm">
+<li>Sydney, AU</li>
+<li>Melbourne, AU</li>
+<li>New York, US</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="flex flex-col md:flex-row justify-between items-center pt-12 border-t border-neutral-100 gap-8 font-['Manrope'] text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-400">
+<div class="flex gap-8">
+<a class="hover:text-neutral-950 transition-colors" href="#">Privacy Policy</a>
+<a class="hover:text-neutral-950 transition-colors" href="#">Terms of Service</a>
+<a class="hover:text-neutral-950 transition-colors" href="#">Cookie Policy</a>
+</div>
+<div>
+                © 2024 Frank Digital. All rights reserved. Built with precision.
+            </div>
+</div>
+</div>
+</footer>
+<script>
+    const observerOptions = {
+        threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.reveal-on-scroll').forEach((el) => {
+        observer.observe(el);
+    });
+</script>
+</body></html>
