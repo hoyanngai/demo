@@ -1,0 +1,1275 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Jaywing — Data, Creative & Performance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800&family=Archivo+Narrow:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Caveat:wght@400;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --bg-2: #111111;
+    --ink: #f2efe8;
+    --ink-dim: rgba(242,239,232,0.6);
+    --ink-dimmer: rgba(242,239,232,0.35);
+    --line: rgba(242,239,232,0.12);
+    --line-2: rgba(242,239,232,0.22);
+    --yellow: #f5d518;
+    --yellow-2: #ffe433;
+    --hand: 'Caveat', cursive;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+    --body: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+    --display: 'Anton', 'Archivo Narrow', 'Helvetica Neue', Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); font-family: var(--body); -webkit-font-smoothing: antialiased; }
+  body { overflow-x: hidden; }
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; padding: 0; }
+  img { max-width: 100%; display: block; }
+
+  /* ===== Custom cursor ===== */
+  .cursor {
+    position: fixed; top: 0; left: 0; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--yellow); pointer-events: none; z-index: 10000; mix-blend-mode: difference;
+    transform: translate(-50%,-50%); transition: width .2s ease, height .2s ease, background .2s ease;
+  }
+  .cursor.big { width: 56px; height: 56px; background: var(--yellow); }
+  @media (max-width: 900px) { .cursor { display: none; } }
+
+  /* ===== Nav ===== */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 32px; transition: background .3s ease, backdrop-filter .3s ease, padding .3s ease, border-color .3s ease;
+    border-bottom: 1px solid transparent;
+  }
+  .nav.solid { background: rgba(10,10,10,0.85); backdrop-filter: blur(12px); border-bottom-color: var(--line); padding: 14px 32px; }
+  .brand { display: flex; align-items: center; gap: 10px; font-family: var(--display); font-size: 26px; letter-spacing: .02em; }
+  .brand .mark {
+    width: 28px; height: 28px; background: var(--yellow); display: grid; place-items: center;
+    color: #000; font-family: var(--display); font-size: 20px; line-height: 1;
+  }
+  .nav-links { display: flex; gap: 4px; }
+  .nav-links a {
+    padding: 10px 14px; font-size: 13px; letter-spacing: .02em; color: var(--ink-dim);
+    position: relative; transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-links a::after {
+    content: ''; position: absolute; left: 14px; right: 14px; bottom: 6px; height: 1px; background: var(--yellow);
+    transform: scaleX(0); transform-origin: left; transition: transform .3s ease;
+  }
+  .nav-links a:hover::after { transform: scaleX(1); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-time { font-family: var(--mono); font-size: 11px; color: var(--ink-dimmer); letter-spacing: .1em; text-transform: uppercase; }
+  .btn-work {
+    background: var(--yellow); color: #000; padding: 10px 16px; font-weight: 700; font-size: 12px;
+    letter-spacing: .08em; text-transform: uppercase; display: inline-flex; align-items: center; gap: 8px;
+    transition: transform .2s ease, background .2s ease;
+  }
+  .btn-work:hover { background: var(--yellow-2); transform: translateY(-1px); }
+  .btn-work .arrow { display: inline-block; transition: transform .2s ease; }
+  .btn-work:hover .arrow { transform: translate(2px,-2px); }
+  @media (max-width: 900px) { .nav-links, .nav-time { display: none; } }
+
+  /* ===== Hero ===== */
+  .hero { position: relative; min-height: 100vh; padding: 120px 32px 80px; overflow: hidden; }
+  .hero-grain {
+    position: absolute; inset: 0; pointer-events: none; opacity: .07; z-index: 1;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
+  }
+  .hero-ticker {
+    position: absolute; top: 84px; left: 0; right: 0; overflow: hidden;
+    border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+    padding: 10px 0; font-family: var(--mono); font-size: 12px; color: var(--ink-dim);
+    letter-spacing: .12em; text-transform: uppercase; white-space: nowrap; z-index: 2;
+  }
+  .hero-ticker .track { display: inline-flex; gap: 48px; animation: tk 40s linear infinite; padding-left: 48px; }
+  .hero-ticker .dot { color: var(--yellow); }
+  @keyframes tk { to { transform: translateX(-50%); } }
+
+  .hero-grid {
+    position: relative; z-index: 3; max-width: 1600px; margin: 40px auto 0;
+    display: grid; grid-template-columns: 1fr; gap: 24px;
+  }
+  .hero-eyebrow {
+    display: flex; align-items: center; gap: 16px;
+    font-family: var(--mono); font-size: 11px; color: var(--ink-dim); letter-spacing: .15em; text-transform: uppercase;
+  }
+  .hero-eyebrow .bar { width: 48px; height: 1px; background: var(--ink-dim); }
+  .hero-eyebrow .pulse { width: 8px; height: 8px; border-radius: 50%; background: var(--yellow); box-shadow: 0 0 0 0 rgba(245,213,24,0.5); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%{ box-shadow: 0 0 0 0 rgba(245,213,24,0.6);} 70%{ box-shadow: 0 0 0 12px rgba(245,213,24,0);} 100%{ box-shadow: 0 0 0 0 rgba(245,213,24,0);} }
+
+  .hero-headline {
+    font-family: var(--display); font-weight: 400; text-transform: uppercase;
+    font-size: clamp(64px, 13vw, 220px); line-height: 0.86; letter-spacing: -0.01em;
+    margin: 32px 0 0; position: relative;
+  }
+  .hero-headline .line { display: block; position: relative; overflow: visible; }
+  .hero-headline .word { display: inline-block; transition: transform .3s ease; }
+  .hero-headline .y { color: var(--yellow); position: relative; display: inline-block; }
+  .hero-headline .y::after {
+    content: ''; position: absolute; left: -4px; right: -4px; bottom: 8%; height: 18%;
+    background: var(--yellow); mix-blend-mode: multiply; z-index: -1; opacity: 0;
+    transform: scaleX(0); transform-origin: left; transition: transform .6s ease, opacity .3s;
+  }
+  .hero-headline.show .y::after { opacity: .3; transform: scaleX(1); }
+  .hero-headline .strike { position: relative; }
+  .hero-headline .strike::before {
+    content: ''; position: absolute; left: -2%; right: -2%; top: 55%; height: 6px; background: var(--yellow);
+    transform: scaleX(0); transform-origin: left; transition: transform .8s cubic-bezier(.2,.8,.2,1) .3s;
+  }
+  .hero-headline.show .strike::before { transform: scaleX(1); }
+
+  .hero-floater {
+    position: absolute; z-index: 2; pointer-events: none;
+    width: 280px; height: 180px; background-size: cover; background-position: center;
+    border: 1px solid rgba(245,213,24,0.25); box-shadow: 0 30px 80px -20px rgba(0,0,0,0.6);
+    filter: grayscale(0.2) contrast(1.05);
+  }
+  .hero-floater.f1 { top: 10%; right: 6%; width: 340px; height: 220px; transform: rotate(-3deg); }
+  .hero-floater.f2 { bottom: 18%; right: 14%; width: 220px; height: 280px; transform: rotate(4deg); }
+  .hero-floater.f3 { top: 40%; left: 4%; width: 180px; height: 240px; transform: rotate(-2deg); }
+  .hero-floater .tape {
+    position: absolute; top: -14px; left: 50%; width: 80px; height: 22px;
+    background: rgba(245,213,24,0.75); transform: translateX(-50%) rotate(-4deg);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  }
+  .hero-floater.f2 .tape { top: auto; bottom: -12px; transform: translateX(-50%) rotate(3deg); }
+  .hero-floater .cap {
+    position: absolute; bottom: -28px; left: 0; font-family: var(--hand); font-size: 22px; color: var(--yellow);
+    transform: rotate(-4deg);
+  }
+
+  .hero-footer {
+    position: relative; z-index: 3; max-width: 1600px; margin: 80px auto 0;
+    display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 32px; align-items: end;
+  }
+  .hero-lede { font-size: 18px; line-height: 1.5; max-width: 520px; color: var(--ink); }
+  .hero-lede .hl { background: var(--yellow); color: #000; padding: 0 4px; }
+  .hero-meta { font-family: var(--mono); font-size: 11px; color: var(--ink-dim); letter-spacing: .12em; text-transform: uppercase; }
+  .hero-meta div { margin-bottom: 6px; }
+  .hero-meta strong { color: var(--ink); font-weight: 500; }
+  .hero-cta { display: flex; align-items: center; gap: 20px; }
+  .btn-primary {
+    background: var(--yellow); color: #000; padding: 18px 26px; font-weight: 700;
+    font-size: 13px; letter-spacing: .12em; text-transform: uppercase; display: inline-flex; align-items: center; gap: 10px;
+    transition: transform .2s ease;
+  }
+  .btn-primary:hover { transform: translate(2px,-2px); box-shadow: -4px 4px 0 var(--ink); }
+  .btn-ghost {
+    padding: 18px 0; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink);
+    border-bottom: 1px solid var(--line-2); transition: border-color .2s;
+  }
+  .btn-ghost:hover { border-color: var(--yellow); color: var(--yellow); }
+
+  .hero-scroll {
+    position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%);
+    font-family: var(--mono); font-size: 10px; letter-spacing: .3em; color: var(--ink-dim);
+    text-transform: uppercase; display: flex; flex-direction: column; align-items: center; gap: 12px;
+    z-index: 3;
+  }
+  .hero-scroll::after { content: ''; width: 1px; height: 40px; background: linear-gradient(to bottom, var(--yellow), transparent); animation: scrollline 2s ease-in-out infinite; }
+  @keyframes scrollline { 0%,100% { opacity: 1; } 50% { opacity: .2; } }
+
+  /* ===== Section base ===== */
+  section { position: relative; }
+  .section { padding: 120px 32px; max-width: 1600px; margin: 0 auto; }
+  .section-head {
+    display: grid; grid-template-columns: auto 1fr auto; gap: 24px; align-items: baseline;
+    padding-bottom: 40px; margin-bottom: 64px; border-bottom: 1px solid var(--line);
+  }
+  .section-num { font-family: var(--mono); font-size: 12px; color: var(--yellow); letter-spacing: .15em; text-transform: uppercase; }
+  .section-title { font-family: var(--display); font-size: clamp(40px, 6vw, 84px); line-height: .92; text-transform: uppercase; font-weight: 400; letter-spacing: -.01em; margin: 0; }
+  .section-kicker { font-family: var(--mono); font-size: 11px; color: var(--ink-dim); letter-spacing: .15em; text-transform: uppercase; text-align: right; }
+
+  .reveal { opacity: 0; transform: translateY(40px); transition: opacity .8s ease, transform .8s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+
+  /* ===== Logo bar ===== */
+  .logos {
+    padding: 40px 32px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+    overflow: hidden; position: relative;
+  }
+  .logos-label { position: absolute; top: 50%; left: 32px; transform: translateY(-50%); font-family: var(--mono); font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-dimmer); background: var(--bg); padding-right: 20px; z-index: 2; }
+  .logos-track {
+    display: flex; gap: 64px; white-space: nowrap; align-items: center;
+    animation: logomarch 50s linear infinite;
+    padding-left: 200px;
+  }
+  .logos-track .item {
+    font-family: var(--display); font-size: 28px; letter-spacing: .04em; color: var(--ink-dim);
+    transition: color .3s; text-transform: uppercase;
+  }
+  .logos-track .item:hover { color: var(--yellow); }
+  .logos-track .dot { color: var(--yellow); }
+  @keyframes logomarch { to { transform: translateX(-50%); } }
+
+  /* ===== Services ===== */
+  .services-list { border-top: 1px solid var(--line); }
+  .service {
+    display: grid; grid-template-columns: 80px 1fr auto 1fr 60px;
+    gap: 32px; align-items: center; padding: 32px 8px;
+    border-bottom: 1px solid var(--line);
+    cursor: pointer; position: relative; overflow: hidden;
+    transition: padding .3s ease;
+  }
+  .service::before {
+    content: ''; position: absolute; inset: 0; background: var(--yellow);
+    transform: translateY(100%); transition: transform .5s cubic-bezier(.2,.8,.2,1); z-index: 0;
+  }
+  .service:hover::before { transform: translateY(0); }
+  .service > * { position: relative; z-index: 1; transition: color .3s ease; }
+  .service:hover > * { color: #000; }
+  .service-num { font-family: var(--mono); font-size: 12px; color: var(--ink-dim); letter-spacing: .15em; }
+  .service-name { font-family: var(--display); font-size: clamp(32px, 4.5vw, 72px); letter-spacing: -.01em; text-transform: uppercase; line-height: 1; }
+  .service-tags { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .service-tag { font-family: var(--mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; padding: 6px 10px; border: 1px solid var(--line-2); border-radius: 2px; color: var(--ink-dim); }
+  .service:hover .service-tag { border-color: #000; color: #000; }
+  .service-desc { font-size: 14px; line-height: 1.5; color: var(--ink-dim); max-width: 360px; }
+  .service-arrow { font-family: var(--display); font-size: 32px; color: var(--ink-dim); justify-self: end; transition: transform .3s, color .3s; }
+  .service:hover .service-arrow { transform: rotate(-45deg); color: #000; }
+
+  /* ===== Stats ===== */
+  .stats-wrap { padding: 120px 32px; background: var(--bg-2); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .stats-inner { max-width: 1600px; margin: 0 auto; }
+  .stats-intro { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; margin-bottom: 80px; align-items: end; }
+  .stats-heading { font-family: var(--display); font-size: clamp(40px,5.5vw,72px); line-height: .95; text-transform: uppercase; font-weight: 400; margin: 0; }
+  .stats-heading em { font-style: normal; color: var(--yellow); }
+  .stats-sub { font-size: 16px; line-height: 1.6; color: var(--ink-dim); max-width: 480px; }
+  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border-left: 1px solid var(--line); }
+  .stat-cell {
+    border-right: 1px solid var(--line); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+    padding: 40px 24px; position: relative; overflow: hidden; cursor: pointer;
+    transition: background .3s;
+  }
+  .stat-cell:hover { background: rgba(245,213,24,0.04); }
+  .stat-label { font-family: var(--mono); font-size: 10px; letter-spacing: .15em; text-transform: uppercase; color: var(--ink-dimmer); margin-bottom: 16px; }
+  .stat-value { font-family: var(--display); font-size: clamp(56px, 7vw, 104px); line-height: .9; color: var(--yellow); letter-spacing: -.02em; }
+  .stat-value .unit { font-size: .5em; color: var(--ink); letter-spacing: 0; }
+  .stat-client { font-family: var(--mono); font-size: 11px; color: var(--ink-dim); margin-top: 20px; letter-spacing: .1em; text-transform: uppercase; }
+  .stat-desc { font-size: 13px; color: var(--ink-dim); margin-top: 8px; max-height: 0; opacity: 0; overflow: hidden; transition: max-height .4s ease, opacity .3s ease; }
+  .stat-cell:hover .stat-desc { max-height: 80px; opacity: 1; }
+
+  /* ===== Work / Case studies ===== */
+  .work-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 24px; }
+  .case {
+    position: relative; overflow: hidden; cursor: pointer; background: var(--bg-2);
+    aspect-ratio: 4/3; transition: transform .4s ease;
+  }
+  .case.big { grid-column: span 4; aspect-ratio: 16/10; }
+  .case.tall { grid-column: span 2; aspect-ratio: 3/4; }
+  .case.wide { grid-column: span 3; aspect-ratio: 16/11; }
+  .case.sm  { grid-column: span 3; aspect-ratio: 16/11; }
+  .case-img { position: absolute; inset: 0; background-size: cover; background-position: center; transition: transform .8s cubic-bezier(.2,.8,.2,1), filter .4s; filter: grayscale(.3) contrast(1.05); }
+  .case:hover .case-img { transform: scale(1.04); filter: none; }
+  .case-scrim { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,.85) 0%, rgba(0,0,0,.1) 50%, rgba(0,0,0,.1) 100%); }
+  .case-body { position: absolute; inset: 0; padding: 28px; display: flex; flex-direction: column; justify-content: space-between; }
+  .case-top { display: flex; justify-content: space-between; align-items: flex-start; }
+  .case-client { font-family: var(--mono); font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--yellow); }
+  .case-tags { display: flex; gap: 8px; }
+  .case-tag { font-family: var(--mono); font-size: 10px; padding: 4px 8px; border: 1px solid rgba(255,255,255,0.3); letter-spacing: .1em; text-transform: uppercase; }
+  .case-bottom { }
+  .case-headline { font-family: var(--display); font-size: clamp(22px, 2.4vw, 40px); line-height: 1; text-transform: uppercase; margin: 0 0 10px; letter-spacing: -.01em; }
+  .case-result {
+    display: inline-flex; align-items: center; gap: 10px; font-family: var(--mono); font-size: 11px; color: #000;
+    background: var(--yellow); padding: 6px 10px; letter-spacing: .1em; text-transform: uppercase;
+  }
+  .case-arrow {
+    position: absolute; top: 20px; right: 20px; width: 44px; height: 44px;
+    background: var(--yellow); color: #000; border-radius: 50%; display: grid; place-items: center;
+    font-family: var(--display); font-size: 20px; transform: scale(0) rotate(-45deg); transition: transform .4s cubic-bezier(.2,.8,.2,1);
+  }
+  .case:hover .case-arrow { transform: scale(1) rotate(0deg); }
+  @media (max-width: 1000px) { .work-grid { grid-template-columns: 1fr 1fr; } .case, .case.big, .case.tall, .case.wide, .case.sm { grid-column: span 1; } }
+
+  /* ===== Quote / Culture ===== */
+  .culture-wrap { padding: 160px 32px; position: relative; overflow: hidden; }
+  .culture-inner { max-width: 1600px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+  .culture-quote { font-family: var(--display); font-size: clamp(36px, 4.5vw, 64px); line-height: 1.02; text-transform: uppercase; font-weight: 400; margin: 0; letter-spacing: -.01em; }
+  .culture-quote em { font-style: normal; color: var(--yellow); background-image: linear-gradient(transparent 60%, rgba(245,213,24,0.25) 60%); padding: 0 4px; }
+  .culture-attr { margin-top: 32px; font-family: var(--mono); font-size: 12px; color: var(--ink-dim); letter-spacing: .15em; text-transform: uppercase; }
+  .culture-visual { position: relative; aspect-ratio: 4/5; }
+  .culture-img { position: absolute; inset: 0; background-size: cover; background-position: center; filter: grayscale(.2); }
+  .culture-stats { position: absolute; left: -40px; bottom: -40px; background: var(--yellow); color: #000; padding: 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px 24px; min-width: 320px; }
+  .culture-stats .k { font-family: var(--mono); font-size: 10px; letter-spacing: .15em; text-transform: uppercase; opacity: .7; }
+  .culture-stats .v { font-family: var(--display); font-size: 36px; line-height: 1; }
+  .culture-tape { position: absolute; top: -14px; right: 40px; width: 120px; height: 28px; background: rgba(245,213,24,0.7); transform: rotate(-3deg); box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
+  .culture-hand { position: absolute; top: 10%; right: -20px; font-family: var(--hand); color: var(--yellow); font-size: 28px; transform: rotate(6deg); }
+
+  /* ===== Insights ===== */
+  .insights-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border-top: 1px solid var(--line); }
+  .insight {
+    border-right: 1px solid var(--line); padding: 32px 28px 28px; position: relative;
+    display: flex; flex-direction: column; gap: 24px; min-height: 380px; cursor: pointer;
+    transition: background .3s;
+  }
+  .insight:last-child { border-right: none; }
+  .insight:hover { background: rgba(245,213,24,0.03); }
+  .insight-meta { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 10px; letter-spacing: .15em; text-transform: uppercase; color: var(--ink-dim); }
+  .insight-meta .tag { color: var(--yellow); }
+  .insight-title { font-family: var(--display); font-size: clamp(22px,2vw,32px); line-height: 1.05; text-transform: uppercase; flex: 1; margin: 0; letter-spacing: -.01em; }
+  .insight-foot { display: flex; justify-content: space-between; align-items: center; font-family: var(--mono); font-size: 11px; color: var(--ink-dim); letter-spacing: .1em; text-transform: uppercase; }
+  .insight-arrow { color: var(--yellow); transition: transform .3s; }
+  .insight:hover .insight-arrow { transform: translate(4px,-4px); }
+  .insight-tape { position: absolute; top: 24px; right: -10px; width: 60px; height: 18px; background: rgba(245,213,24,0.7); transform: rotate(-6deg); }
+  @media (max-width: 1000px) { .insights-grid { grid-template-columns: 1fr; } .insight { border-right: none; border-bottom: 1px solid var(--line); } }
+
+  /* ===== Awards ===== */
+  .awards-wrap { padding: 100px 32px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--bg-2); }
+  .awards-inner { max-width: 1600px; margin: 0 auto; }
+  .awards-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 48px; flex-wrap: wrap; gap: 24px; }
+  .awards-title { font-family: var(--display); font-size: clamp(32px, 4vw, 56px); text-transform: uppercase; letter-spacing: -.01em; margin: 0; font-weight: 400; }
+  .awards-title em { font-style: normal; color: var(--yellow); }
+  .awards-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; }
+  .award { display: grid; grid-template-columns: 60px 80px 1fr auto; gap: 24px; align-items: center; padding: 24px 0; border-top: 1px solid var(--line); }
+  .award:last-child { border-bottom: 1px solid var(--line); }
+  .award-year { font-family: var(--mono); font-size: 12px; color: var(--ink-dim); letter-spacing: .1em; }
+  .award-trophy { font-family: var(--display); font-size: 28px; color: var(--yellow); text-align: center; }
+  .award-name { font-family: var(--display); font-size: clamp(18px, 1.4vw, 22px); text-transform: uppercase; letter-spacing: -.005em; line-height: 1.1; }
+  .award-org { font-family: var(--mono); font-size: 11px; color: var(--ink-dim); letter-spacing: .1em; text-transform: uppercase; white-space: nowrap; }
+  @media (max-width: 900px) { .awards-list { grid-template-columns: 1fr; } }
+
+  /* ===== CTA footer ===== */
+  .cta-wrap { padding: 140px 32px 60px; position: relative; overflow: hidden; }
+  .cta-head { max-width: 1600px; margin: 0 auto 80px; }
+  .cta-title { font-family: var(--display); font-size: clamp(80px, 14vw, 240px); line-height: .85; text-transform: uppercase; font-weight: 400; margin: 0; letter-spacing: -.02em; }
+  .cta-title .outline { -webkit-text-stroke: 2px var(--ink); color: transparent; }
+  .cta-title .y { color: var(--yellow); }
+  .cta-row { display: grid; grid-template-columns: 1fr auto 1fr; align-items: end; gap: 40px; max-width: 1600px; margin: 0 auto; }
+  .cta-form-btn {
+    background: var(--yellow); color: #000; padding: 28px 40px; font-weight: 800; font-size: 15px;
+    letter-spacing: .12em; text-transform: uppercase; display: inline-flex; align-items: center; gap: 16px;
+    transition: transform .2s;
+  }
+  .cta-form-btn:hover { transform: translate(3px,-3px); box-shadow: -5px 5px 0 var(--ink); }
+  .cta-details { font-family: var(--mono); font-size: 12px; color: var(--ink-dim); letter-spacing: .1em; text-transform: uppercase; line-height: 1.9; }
+  .cta-details a { color: var(--ink); border-bottom: 1px solid var(--line-2); }
+  .cta-details a:hover { color: var(--yellow); }
+
+  .footer {
+    padding: 80px 32px 32px; border-top: 1px solid var(--line); max-width: 1600px; margin: 40px auto 0;
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px;
+  }
+  .footer-brand { font-family: var(--display); font-size: 48px; line-height: 1; text-transform: uppercase; }
+  .footer-brand .y { color: var(--yellow); }
+  .footer-tag { margin-top: 16px; font-size: 13px; color: var(--ink-dim); max-width: 320px; line-height: 1.5; }
+  .footer-col h4 { font-family: var(--mono); font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--ink-dimmer); margin: 0 0 16px; }
+  .footer-col a { display: block; padding: 4px 0; font-size: 14px; color: var(--ink); transition: color .2s, transform .2s; }
+  .footer-col a:hover { color: var(--yellow); transform: translateX(4px); }
+  .legal { max-width: 1600px; margin: 40px auto 0; padding: 32px 32px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; font-family: var(--mono); font-size: 11px; color: var(--ink-dimmer); letter-spacing: .1em; text-transform: uppercase; }
+
+  /* ===== Modal ===== */
+  .modal-backdrop {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(6px);
+    z-index: 2000; display: none; align-items: flex-start; justify-content: center; padding: 40px 20px;
+    overflow-y: auto;
+  }
+  .modal-backdrop.open { display: flex; }
+  .modal {
+    background: var(--bg); max-width: 1100px; width: 100%; position: relative;
+    border: 1px solid var(--line); animation: mIn .4s ease;
+  }
+  @keyframes mIn { from { opacity: 0; transform: translateY(40px); } }
+  .modal-close {
+    position: absolute; top: 20px; right: 20px; width: 44px; height: 44px; background: var(--yellow); color: #000;
+    border-radius: 50%; font-family: var(--display); font-size: 22px; z-index: 2;
+  }
+  .modal-hero { aspect-ratio: 21/9; background-size: cover; background-position: center; position: relative; }
+  .modal-hero-label { position: absolute; bottom: 24px; left: 24px; font-family: var(--mono); font-size: 11px; color: var(--yellow); letter-spacing: .15em; text-transform: uppercase; }
+  .modal-body { padding: 48px; }
+  .modal-title { font-family: var(--display); font-size: clamp(40px, 5vw, 72px); line-height: .95; text-transform: uppercase; margin: 0 0 32px; letter-spacing: -.01em; }
+  .modal-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 48px; }
+  .modal-body p { font-size: 15px; line-height: 1.6; color: var(--ink-dim); }
+  .modal-results { border-left: 1px solid var(--yellow); padding-left: 24px; }
+  .modal-results h4 { font-family: var(--mono); font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--ink-dim); margin: 0 0 16px; }
+  .modal-stat { font-family: var(--display); font-size: 48px; line-height: 1; color: var(--yellow); margin-bottom: 4px; }
+  .modal-stat-label { font-size: 12px; color: var(--ink-dim); margin-bottom: 24px; }
+  .modal-tags { margin-top: 32px; display: flex; gap: 8px; flex-wrap: wrap; }
+  .modal-tags span { font-family: var(--mono); font-size: 10px; padding: 6px 10px; border: 1px solid var(--line-2); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-dim); }
+
+  /* ===== Contact modal ===== */
+  .contact-form { display: grid; gap: 20px; padding: 48px; }
+  .contact-form h3 { font-family: var(--display); font-size: 48px; text-transform: uppercase; margin: 0 0 12px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .form-field { display: flex; flex-direction: column; gap: 8px; }
+  .form-field label { font-family: var(--mono); font-size: 10px; letter-spacing: .15em; text-transform: uppercase; color: var(--ink-dim); }
+  .form-field input, .form-field select, .form-field textarea {
+    background: transparent; border: none; border-bottom: 1px solid var(--line-2); color: var(--ink);
+    padding: 10px 0; font-family: var(--body); font-size: 15px; outline: none; transition: border-color .2s;
+  }
+  .form-field input:focus, .form-field select:focus, .form-field textarea:focus { border-color: var(--yellow); }
+  .form-field textarea { resize: vertical; min-height: 80px; }
+  .form-field select option { background: var(--bg); color: var(--ink); }
+  .form-error { color: #ff6b6b; font-family: var(--mono); font-size: 11px; letter-spacing: .1em; display: none; }
+  .form-error.show { display: block; }
+  .form-submit { justify-self: start; background: var(--yellow); color: #000; padding: 18px 32px; font-weight: 800; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; transition: transform .2s; }
+  .form-submit:hover { transform: translate(2px,-2px); box-shadow: -4px 4px 0 var(--ink); }
+  .form-success { padding: 48px; text-align: center; }
+  .form-success .big { font-family: var(--display); font-size: 64px; color: var(--yellow); text-transform: uppercase; margin-bottom: 16px; }
+
+  @media (max-width: 900px) {
+    .hero-footer { grid-template-columns: 1fr; gap: 24px; }
+    .stats-intro { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+    .service { grid-template-columns: 40px 1fr 40px; }
+    .service-tags, .service-desc { display: none; }
+    .culture-inner { grid-template-columns: 1fr; }
+    .cta-row { grid-template-columns: 1fr; }
+    .footer { grid-template-columns: 1fr 1fr; }
+    .modal-grid { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+    .hero-floater { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+
+<!-- ========== NAV ========== -->
+<nav class="nav" id="nav">
+  <a href="#" class="brand"><span class="mark">J</span>JAYWING</a>
+  <div class="nav-links">
+    <a href="#work">Work</a>
+    <a href="#services">Services</a>
+    <a href="#insights">Insights</a>
+    <a href="#culture">Culture</a>
+    <a href="#awards">Awards</a>
+  </div>
+  <div class="nav-right">
+    <div class="nav-time" id="navtime">SYD · 09:08</div>
+    <button class="btn-work" onclick="openContact()">Start a project <span class="arrow">↗</span></button>
+  </div>
+</nav>
+
+<!-- ========== HERO ========== -->
+<section class="hero" id="hero">
+  <div class="hero-grain"></div>
+
+  <div class="hero-ticker">
+    <div class="track">
+      <span><span class="dot">●</span> PERFORMANCE AGENCY OF THE YEAR 2023 — B&amp;T</span>
+      <span><span class="dot">●</span> BEST LARGE INTEGRATED AGENCY 2025 — APAC SEARCH AWARDS</span>
+      <span><span class="dot">●</span> NOW HIRING — 6 ROLES IN MELBOURNE &amp; SYDNEY</span>
+      <span><span class="dot">●</span> +489% REVENUE · AI-POWERED PPC</span>
+      <span><span class="dot">●</span> PERFORMANCE AGENCY OF THE YEAR 2023 — B&amp;T</span>
+      <span><span class="dot">●</span> BEST LARGE INTEGRATED AGENCY 2025 — APAC SEARCH AWARDS</span>
+      <span><span class="dot">●</span> NOW HIRING — 6 ROLES IN MELBOURNE &amp; SYDNEY</span>
+      <span><span class="dot">●</span> +489% REVENUE · AI-POWERED PPC</span>
+    </div>
+  </div>
+
+  <!-- Floating photos (using picsum so we get real imagery) -->
+  <div class="hero-floater f1" data-parallax="0.08" style="background-image: url('https://images.unsplash.com/photo-1493238792000-8113da705763?w=800&q=70');">
+    <div class="tape"></div>
+  </div>
+  <div class="hero-floater f2" data-parallax="0.15" style="background-image: url('https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=600&q=70');">
+    <div class="tape"></div>
+  </div>
+  <div class="hero-floater f3" data-parallax="0.12" style="background-image: url('https://images.unsplash.com/photo-1590402494587-44b71d7772f6?w=600&q=70');">
+    <div class="tape"></div>
+  </div>
+
+  <div class="hero-grid">
+    <div class="hero-eyebrow">
+      <span class="pulse"></span>
+      <span class="bar"></span>
+      <span>Integrated data · creative · performance</span>
+    </div>
+    <h1 class="hero-headline" id="headline">
+      <span class="line"><span class="word">NONE</span> <span class="word">OF</span></span>
+      <span class="line"><span class="word">THIS</span> <span class="word">HAPPENS</span></span>
+      <span class="line"><span class="word">BY</span> <span class="word y">CHANCE<span class="underline"></span></span><span class="word">.</span></span>
+    </h1>
+  </div>
+
+  <div class="hero-footer">
+    <p class="hero-lede">
+      Certainty is rare, and increasingly valuable. Jaywing brings together the best minds in
+      <span class="hl">data intelligence</span>, creative engagement and channel performance to deliver results
+      that aren't a fluke — they're engineered.
+    </p>
+    <div class="hero-meta">
+      <div><strong>23</strong> years in market</div>
+      <div><strong>200+</strong> specialists · 4 offices</div>
+      <div><strong>AU · UK</strong> Sydney · Melbourne · Leeds · Sheffield</div>
+    </div>
+    <div class="hero-cta">
+      <a href="#work" class="btn-primary" data-magnetic>See the work <span>↘</span></a>
+      <a href="#services" class="btn-ghost">What we do</a>
+    </div>
+  </div>
+
+  <div class="hero-scroll">SCROLL</div>
+</section>
+
+<!-- ========== LOGO BAR ========== -->
+<div class="logos" id="logos">
+  <span class="logos-label">Trusted by ↓</span>
+  <div class="logos-track">
+    <span class="item">MYER</span><span class="dot item">✦</span>
+    <span class="item">CROCS</span><span class="dot item">✦</span>
+    <span class="item">NEW BALANCE</span><span class="dot item">✦</span>
+    <span class="item">A2 MILK</span><span class="dot item">✦</span>
+    <span class="item">TLC HEALTHCARE</span><span class="dot item">✦</span>
+    <span class="item">OES</span><span class="dot item">✦</span>
+    <span class="item">MOBILE TYRE SHOP</span><span class="dot item">✦</span>
+    <span class="item">MADAME TUSSAUDS</span><span class="dot item">✦</span>
+    <span class="item">JET2</span><span class="dot item">✦</span>
+    <!-- dupe -->
+    <span class="item">MYER</span><span class="dot item">✦</span>
+    <span class="item">CROCS</span><span class="dot item">✦</span>
+    <span class="item">NEW BALANCE</span><span class="dot item">✦</span>
+    <span class="item">A2 MILK</span><span class="dot item">✦</span>
+    <span class="item">TLC HEALTHCARE</span><span class="dot item">✦</span>
+    <span class="item">OES</span><span class="dot item">✦</span>
+    <span class="item">MOBILE TYRE SHOP</span><span class="dot item">✦</span>
+    <span class="item">MADAME TUSSAUDS</span><span class="dot item">✦</span>
+    <span class="item">JET2</span><span class="dot item">✦</span>
+  </div>
+</div>
+
+<!-- ========== SERVICES ========== -->
+<section class="section" id="services">
+  <div class="section-head reveal">
+    <span class="section-num">[01] Services</span>
+    <h2 class="section-title">What we do<br/>(in plain English)</h2>
+    <span class="section-kicker">Four practices. One agency.</span>
+  </div>
+
+  <div class="services-list reveal">
+    <div class="service" data-magnetic>
+      <span class="service-num">01 /</span>
+      <span class="service-name">Data</span>
+      <div class="service-tags">
+        <span class="service-tag">Analytics</span>
+        <span class="service-tag">CDP</span>
+        <span class="service-tag">Attribution</span>
+        <span class="service-tag">CRM</span>
+      </div>
+      <p class="service-desc">Data science that actually moves the business. From measurement models to audiences, we turn your data into growth you can see.</p>
+      <span class="service-arrow">↗</span>
+    </div>
+
+    <div class="service" data-magnetic>
+      <span class="service-num">02 /</span>
+      <span class="service-name">Creative</span>
+      <div class="service-tags">
+        <span class="service-tag">Brand</span>
+        <span class="service-tag">Campaign</span>
+        <span class="service-tag">Content</span>
+        <span class="service-tag">Production</span>
+      </div>
+      <p class="service-desc">Ideas worth the media they ride on. We combine deep insight with exceptional storytelling to build brands people remember.</p>
+      <span class="service-arrow">↗</span>
+    </div>
+
+    <div class="service" data-magnetic>
+      <span class="service-num">03 /</span>
+      <span class="service-name">Performance</span>
+      <div class="service-tags">
+        <span class="service-tag">SEO</span>
+        <span class="service-tag">PPC</span>
+        <span class="service-tag">Paid Social</span>
+        <span class="service-tag">Digital PR</span>
+      </div>
+      <p class="service-desc">APAC's most awarded search and media team. Channel performance engineered around your margin, not a vanity dashboard.</p>
+      <span class="service-arrow">↗</span>
+    </div>
+
+    <div class="service" data-magnetic>
+      <span class="service-num">04 /</span>
+      <span class="service-name">AI &amp; Automation</span>
+      <div class="service-tags">
+        <span class="service-tag">LLM Strategy</span>
+        <span class="service-tag">AI Search</span>
+        <span class="service-tag">Agentic Workflows</span>
+      </div>
+      <p class="service-desc">A 23-year heritage in data science, pointed at what's next. Build AI into your marketing stack — with safeguards, not hype.</p>
+      <span class="service-arrow">↗</span>
+    </div>
+  </div>
+</section>
+
+<!-- ========== STATS ========== -->
+<section class="stats-wrap" id="stats">
+  <div class="stats-inner">
+    <div class="stats-intro reveal">
+      <h2 class="stats-heading">We measure<br/>everything<br/>in <em>outcomes.</em></h2>
+      <p class="stats-sub">Chance is a bad business plan. Every engagement is designed around measurable commercial lift — in revenue, share, rankings, conversions, acquisition cost. Here's a sample of the last 12 months.</p>
+    </div>
+
+    <div class="stats-grid reveal">
+      <div class="stat-cell" data-magnetic>
+        <div class="stat-label">[A] Home Loan · AU Bank</div>
+        <div class="stat-value"><span data-count="420">0</span><span class="unit">%</span></div>
+        <div class="stat-client">Increase in applications</div>
+        <div class="stat-desc">Full-funnel audience rebuild + creative retargeting on a national refinance push.</div>
+      </div>
+      <div class="stat-cell" data-magnetic>
+        <div class="stat-label">[B] Retail · Myer</div>
+        <div class="stat-value"><span data-count="58">0</span><span class="unit">%</span></div>
+        <div class="stat-client">Organic search revenue</div>
+        <div class="stat-desc">Technical SEO overhaul + content strategy + digital PR backlink campaign.</div>
+      </div>
+      <div class="stat-cell" data-magnetic>
+        <div class="stat-label">[C] Membership · Sporting Body</div>
+        <div class="stat-value"><span data-count="80">0</span><span class="unit">%</span></div>
+        <div class="stat-client">New member sign-ups</div>
+        <div class="stat-desc">Modelled acquisition scoring + creative A/B/n at scale across paid social.</div>
+      </div>
+      <div class="stat-cell" data-magnetic>
+        <div class="stat-label">[D] eCommerce · DTC Brand</div>
+        <div class="stat-value"><span data-count="489">0</span><span class="unit">%</span></div>
+        <div class="stat-client">Revenue via AI-powered PPC</div>
+        <div class="stat-desc">Bid-side automation against a custom margin-weighted value signal.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== WORK ========== -->
+<section class="section" id="work">
+  <div class="section-head reveal">
+    <span class="section-num">[02] Selected work</span>
+    <h2 class="section-title">Proof, <br/>not promises.</h2>
+    <span class="section-kicker">Click any case for the story</span>
+  </div>
+
+  <div class="work-grid reveal">
+    <article class="case big" data-case="myer">
+      <div class="case-img" style="background-image: url('https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=1400&q=70');"></div>
+      <div class="case-scrim"></div>
+      <div class="case-body">
+        <div class="case-top">
+          <div>
+            <div class="case-client">Myer · 2024 – present</div>
+          </div>
+          <div class="case-tags"><span class="case-tag">SEO</span><span class="case-tag">Digital PR</span></div>
+        </div>
+        <div class="case-bottom">
+          <h3 class="case-headline">Turning a retail icon into a search category leader.</h3>
+          <span class="case-result">↗ +58% organic revenue</span>
+        </div>
+      </div>
+      <div class="case-arrow">↗</div>
+    </article>
+
+    <article class="case tall" data-case="crocs">
+      <div class="case-img" style="background-image: url('https://images.unsplash.com/photo-1520639888713-7851133b1ed0?w=800&q=70');"></div>
+      <div class="case-scrim"></div>
+      <div class="case-body">
+        <div class="case-top">
+          <div class="case-client">Crocs · 2023</div>
+          <div class="case-tags"><span class="case-tag">Creative</span></div>
+        </div>
+        <div class="case-bottom">
+          <h3 class="case-headline">A campaign built for the feed, not the brief.</h3>
+          <span class="case-result">↗ 3.2× engagement</span>
+        </div>
+      </div>
+      <div class="case-arrow">↗</div>
+    </article>
+
+    <article class="case wide" data-case="newbalance">
+      <div class="case-img" style="background-image: url('https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=1200&q=70');"></div>
+      <div class="case-scrim"></div>
+      <div class="case-body">
+        <div class="case-top">
+          <div class="case-client">New Balance · 2024</div>
+          <div class="case-tags"><span class="case-tag">Paid Media</span><span class="case-tag">Data</span></div>
+        </div>
+        <div class="case-bottom">
+          <h3 class="case-headline">Every dollar accounted for across 14 markets.</h3>
+          <span class="case-result">↗ -34% CPA</span>
+        </div>
+      </div>
+      <div class="case-arrow">↗</div>
+    </article>
+
+    <article class="case sm" data-case="a2">
+      <div class="case-img" style="background-image: url('https://images.unsplash.com/photo-1563636619-e9143da7973b?w=1200&q=70');"></div>
+      <div class="case-scrim"></div>
+      <div class="case-body">
+        <div class="case-top">
+          <div class="case-client">a2 Milk · 2024</div>
+          <div class="case-tags"><span class="case-tag">Analytics</span><span class="case-tag">CRM</span></div>
+        </div>
+        <div class="case-bottom">
+          <h3 class="case-headline">From data lake to decision-ready, in one quarter.</h3>
+          <span class="case-result">↗ 4× faster insight</span>
+        </div>
+      </div>
+      <div class="case-arrow">↗</div>
+    </article>
+
+    <article class="case wide" data-case="tlc">
+      <div class="case-img" style="background-image: url('https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1200&q=70');"></div>
+      <div class="case-scrim"></div>
+      <div class="case-body">
+        <div class="case-top">
+          <div class="case-client">TLC Healthcare · 2025</div>
+          <div class="case-tags"><span class="case-tag">SEO</span><span class="case-tag">Content</span></div>
+        </div>
+        <div class="case-bottom">
+          <h3 class="case-headline">Rankings that translate to real admissions.</h3>
+          <span class="case-result">↗ #1 for 180 terms</span>
+        </div>
+      </div>
+      <div class="case-arrow">↗</div>
+    </article>
+
+    <article class="case sm" data-case="oes">
+      <div class="case-img" style="background-image: url('https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1200&q=70');"></div>
+      <div class="case-scrim"></div>
+      <div class="case-body">
+        <div class="case-top">
+          <div class="case-client">OES · 2024</div>
+          <div class="case-tags"><span class="case-tag">PPC</span><span class="case-tag">AI</span></div>
+        </div>
+        <div class="case-bottom">
+          <h3 class="case-headline">AI-powered PPC, tuned for enrolment margin.</h3>
+          <span class="case-result">↗ +489% revenue</span>
+        </div>
+      </div>
+      <div class="case-arrow">↗</div>
+    </article>
+  </div>
+</section>
+
+<!-- ========== CULTURE ========== -->
+<section class="culture-wrap" id="culture">
+  <div class="culture-inner">
+    <div class="reveal">
+      <span class="section-num">[03] Culture</span>
+      <h2 class="culture-quote" style="margin-top: 24px;">
+        "We don't sell services. We <em>solve problems</em> and realise opportunities — with people who'd rather build the answer than assemble a deck."
+      </h2>
+      <div class="culture-attr">— Tom Geekie, CEO · Jaywing</div>
+
+      <div style="margin-top: 48px; display: flex; gap: 20px; align-items: center;">
+        <a href="#" class="btn-ghost">Meet the team</a>
+        <a href="#" class="btn-ghost">Open roles (6)</a>
+      </div>
+    </div>
+
+    <div class="culture-visual reveal">
+      <div class="culture-tape"></div>
+      <div class="culture-img" style="background-image: url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&q=70');"></div>
+      <div class="culture-hand">real humans ↓</div>
+      <div class="culture-stats">
+        <div>
+          <div class="k">Specialists</div>
+          <div class="v">200+</div>
+        </div>
+        <div>
+          <div class="k">Offices</div>
+          <div class="v">4</div>
+        </div>
+        <div>
+          <div class="k">Melbourne HC</div>
+          <div class="v">20</div>
+        </div>
+        <div>
+          <div class="k">Years in AU</div>
+          <div class="v">12</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== INSIGHTS ========== -->
+<section class="section" id="insights">
+  <div class="section-head reveal">
+    <span class="section-num">[04] Insights</span>
+    <h2 class="section-title">Things we<br/>figured out<br/>this week.</h2>
+    <span class="section-kicker">Weekly · from the practice</span>
+  </div>
+
+  <div class="insights-grid reveal">
+    <article class="insight" data-article="searchgpt">
+      <div class="insight-tape"></div>
+      <div class="insight-meta">
+        <span class="tag">AI SEARCH</span>
+        <span>8 MIN READ</span>
+      </div>
+      <h3 class="insight-title">SearchGPT vs. Google: what it really means for digital marketers.</h3>
+      <div class="insight-foot">
+        <span>14 APR 2026</span>
+        <span class="insight-arrow">↗</span>
+      </div>
+    </article>
+
+    <article class="insight" data-article="cookies">
+      <div class="insight-tape"></div>
+      <div class="insight-meta">
+        <span class="tag">DATA</span>
+        <span>6 MIN READ</span>
+      </div>
+      <h3 class="insight-title">Google's cookie crumbles — why the end isn't really the end.</h3>
+      <div class="insight-foot">
+        <span>02 APR 2026</span>
+        <span class="insight-arrow">↗</span>
+      </div>
+    </article>
+
+    <article class="insight" data-article="asia">
+      <div class="insight-tape"></div>
+      <div class="insight-meta">
+        <span class="tag">GROWTH</span>
+        <span>5 MIN READ</span>
+      </div>
+      <h3 class="insight-title">Jaywing expands to Asia following big business growth.</h3>
+      <div class="insight-foot">
+        <span>25 MAR 2026</span>
+        <span class="insight-arrow">↗</span>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ========== AWARDS ========== -->
+<section class="awards-wrap" id="awards">
+  <div class="awards-inner">
+    <div class="awards-head reveal">
+      <h2 class="awards-title">Recognition <em>(briefly)</em></h2>
+      <span class="section-kicker" style="font-family: var(--mono); font-size: 11px; color: var(--ink-dim); letter-spacing: .15em; text-transform: uppercase;">Full list on request</span>
+    </div>
+
+    <div class="awards-list reveal">
+      <div class="award">
+        <span class="award-year">2025</span>
+        <span class="award-trophy">◆</span>
+        <span class="award-name">Best Large Integrated Agency</span>
+        <span class="award-org">APAC Search Awards</span>
+      </div>
+      <div class="award">
+        <span class="award-year">2024</span>
+        <span class="award-trophy">◆</span>
+        <span class="award-name">Best Large SEO Agency — Shortlist</span>
+        <span class="award-org">APAC Search Awards</span>
+      </div>
+      <div class="award">
+        <span class="award-year">2023</span>
+        <span class="award-trophy">★</span>
+        <span class="award-name">Performance Agency of the Year</span>
+        <span class="award-org">B&amp;T Awards</span>
+      </div>
+      <div class="award">
+        <span class="award-year">2024</span>
+        <span class="award-trophy">◆</span>
+        <span class="award-name">Best Data-Led Campaign</span>
+        <span class="award-org">Mumbrella</span>
+      </div>
+      <div class="award">
+        <span class="award-year">2023</span>
+        <span class="award-trophy">◆</span>
+        <span class="award-name">Search Agency of the Year — Finalist</span>
+        <span class="award-org">The Drum APAC</span>
+      </div>
+      <div class="award">
+        <span class="award-year">2024</span>
+        <span class="award-trophy">◆</span>
+        <span class="award-name">Best Use of AI in Media</span>
+        <span class="award-org">Campaign Asia</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== CTA ========== -->
+<section class="cta-wrap" id="cta">
+  <div class="cta-head reveal">
+    <h2 class="cta-title">
+      <span>WANT TO</span><br/>
+      <span>WORK <span class="y">WITH US</span>?</span><br/>
+      <span class="outline">LET'S TALK.</span>
+    </h2>
+  </div>
+  <div class="cta-row reveal">
+    <div class="cta-details">
+      <div><strong style="color: var(--ink); font-weight: 500;">SYDNEY</strong> · 02 8084 2214</div>
+      <div>4/36 Hickson Road, Millers Point NSW 2000</div>
+      <div><strong style="color: var(--ink); font-weight: 500;">MELBOURNE</strong> · 03 9988 7905</div>
+      <div>1/137 Flinders Lane, Melbourne VIC 3000</div>
+      <div style="margin-top: 12px;"><a href="mailto:hello@jaywing.com.au">hello@jaywing.com.au</a></div>
+    </div>
+    <button class="cta-form-btn" onclick="openContact()">
+      Start a project <span>↗</span>
+    </button>
+    <div class="cta-details" style="text-align: right;">
+      <div>24-hr response · weekdays</div>
+      <div>Avg. first-call 2 days</div>
+      <div style="margin-top: 12px;"><a href="#">LinkedIn</a> · <a href="#">Instagram</a></div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div>
+      <div class="footer-brand">JAY<span class="y">WING</span><span class="y">.</span></div>
+      <p class="footer-tag">Data, creative and performance marketing. Sydney · Melbourne · Leeds · Sheffield.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <a href="#">About</a>
+      <a href="#">Careers</a>
+      <a href="#">Press</a>
+      <a href="#">Contact</a>
+    </div>
+    <div class="footer-col">
+      <h4>Work</h4>
+      <a href="#">Case studies</a>
+      <a href="#">Services</a>
+      <a href="#">Industries</a>
+      <a href="#">Sectors</a>
+    </div>
+    <div class="footer-col">
+      <h4>Resources</h4>
+      <a href="#">Insights</a>
+      <a href="#">Reports</a>
+      <a href="#">Webinars</a>
+      <a href="#">Newsletter</a>
+    </div>
+  </footer>
+
+  <div class="legal">
+    <span>© 2026 Jaywing Australia Pty Ltd · ABN 12 345 678 910</span>
+    <span>Privacy · Terms · Cookies</span>
+  </div>
+</section>
+
+<!-- ========== CASE MODAL ========== -->
+<div class="modal-backdrop" id="caseModal" onclick="if(event.target===this) closeModal()">
+  <div class="modal" id="caseModalInner">
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <div class="modal-hero" id="modalHero">
+      <div class="modal-hero-label" id="modalClient">CLIENT</div>
+    </div>
+    <div class="modal-body">
+      <h3 class="modal-title" id="modalTitle">Case title</h3>
+      <div class="modal-grid">
+        <div>
+          <p id="modalChallenge"></p>
+          <p id="modalSolution"></p>
+          <div class="modal-tags" id="modalTags"></div>
+        </div>
+        <div class="modal-results">
+          <h4>Results</h4>
+          <div id="modalResults"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== CONTACT MODAL ========== -->
+<div class="modal-backdrop" id="contactModal" onclick="if(event.target===this) closeContact()">
+  <div class="modal" style="max-width: 720px;">
+    <button class="modal-close" onclick="closeContact()">×</button>
+    <form class="contact-form" id="contactForm" onsubmit="return submitContact(event)">
+      <h3>Start a <span style="color:var(--yellow);">project</span>.</h3>
+      <p style="color: var(--ink-dim); font-size: 14px; margin: 0 0 12px;">We'll come back to you within a business day. No discovery calls that should've been emails.</p>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label>Your name</label>
+          <input type="text" name="name" required />
+        </div>
+        <div class="form-field">
+          <label>Company</label>
+          <input type="text" name="company" required />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label>Work email</label>
+          <input type="email" name="email" required />
+          <span class="form-error" id="err-email">Looks like that's not a valid email.</span>
+        </div>
+        <div class="form-field">
+          <label>Budget</label>
+          <select name="budget" required>
+            <option value="">Select range</option>
+            <option>Under $50k</option>
+            <option>$50k–$150k</option>
+            <option>$150k–$500k</option>
+            <option>$500k+</option>
+            <option>Not sure yet</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-field">
+        <label>What do you need?</label>
+        <select name="need" required>
+          <option value="">Select</option>
+          <option>Data &amp; analytics</option>
+          <option>Creative &amp; brand</option>
+          <option>Performance media</option>
+          <option>SEO / digital PR</option>
+          <option>AI &amp; automation</option>
+          <option>Something else</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label>Tell us more</label>
+        <textarea name="message" rows="4"></textarea>
+      </div>
+      <button type="submit" class="form-submit">Send ↗</button>
+    </form>
+    <div class="form-success" id="formSuccess" style="display:none;">
+      <div class="big">Sent.</div>
+      <p style="color: var(--ink-dim);">Thanks — we'll be in touch within one business day.</p>
+      <button class="btn-ghost" onclick="closeContact()" style="margin-top: 24px;">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ===== Cursor ===== */
+const cursor = document.getElementById('cursor');
+let cx = 0, cy = 0, tx = 0, ty = 0;
+window.addEventListener('mousemove', e => { tx = e.clientX; ty = e.clientY; });
+(function raf(){ cx += (tx-cx)*0.22; cy += (ty-cy)*0.22; cursor.style.transform=`translate(${cx}px,${cy}px) translate(-50%,-50%)`; requestAnimationFrame(raf); })();
+
+/* Magnetic hover targets enlarge cursor */
+document.querySelectorAll('[data-magnetic], a, button, .service, .case, .insight, .stat-cell').forEach(el => {
+  el.addEventListener('mouseenter', () => cursor.classList.add('big'));
+  el.addEventListener('mouseleave', () => cursor.classList.remove('big'));
+});
+
+/* ===== Nav solid on scroll ===== */
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('solid', window.scrollY > 40);
+}, { passive: true });
+
+/* ===== Clock ===== */
+function updateTime(){
+  const t = new Date();
+  const syd = t.toLocaleTimeString('en-AU', { timeZone: 'Australia/Sydney', hour: '2-digit', minute: '2-digit', hour12: false });
+  document.getElementById('navtime').textContent = 'SYD · ' + syd;
+}
+updateTime(); setInterval(updateTime, 30000);
+
+/* ===== Hero parallax + headline word lift ===== */
+const floaters = document.querySelectorAll('[data-parallax]');
+const headline = document.getElementById('headline');
+const words = headline.querySelectorAll('.word');
+const hero = document.getElementById('hero');
+
+hero.addEventListener('mousemove', (e) => {
+  const rect = hero.getBoundingClientRect();
+  const mx = (e.clientX - rect.left) / rect.width - 0.5;
+  const my = (e.clientY - rect.top) / rect.height - 0.5;
+  floaters.forEach(f => {
+    const s = parseFloat(f.dataset.parallax);
+    const existing = f.style.transform.match(/rotate\([-\d.]+deg\)/)?.[0] || '';
+    f.style.transform = `translate(${mx * 60 * s * 10}px, ${my * 60 * s * 10}px) ${existing}`;
+  });
+  words.forEach((w, i) => {
+    w.style.transform = `translate(${mx * (i%2 ? -8 : 8)}px, ${my * (i%2 ? 8 : -8)}px)`;
+  });
+});
+hero.addEventListener('mouseleave', () => {
+  floaters.forEach(f => { const existing = f.style.transform.match(/rotate\([-\d.]+deg\)/)?.[0] || ''; f.style.transform = existing; });
+  words.forEach(w => w.style.transform = '');
+});
+
+/* Scroll-based parallax for floaters */
+window.addEventListener('scroll', () => {
+  const y = window.scrollY;
+  floaters.forEach(f => {
+    const s = parseFloat(f.dataset.parallax);
+    const existing = f.style.transform.replace(/translateY\([-\d.]+px\)/, '');
+    // store base rotate only
+    const rot = existing.match(/rotate\([-\d.]+deg\)/)?.[0] || '';
+    const trans = existing.match(/translate\([^)]+\)/)?.[0] || '';
+    f.style.transform = `${trans} ${rot} translateY(${-y * s}px)`;
+  });
+}, { passive: true });
+
+/* Trigger headline highlight */
+setTimeout(() => headline.classList.add('show'), 500);
+
+/* ===== Reveal on scroll ===== */
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+/* ===== Count-up stats ===== */
+const countIO = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    const el = e.target;
+    if (el.dataset.done) return;
+    el.dataset.done = '1';
+    const target = parseInt(el.dataset.count, 10);
+    const dur = 1400; const start = performance.now();
+    (function tick(now){
+      const p = Math.min(1, (now - start) / dur);
+      const eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(target * eased);
+      if (p < 1) requestAnimationFrame(tick);
+    })(start);
+  });
+}, { threshold: 0.4 });
+document.querySelectorAll('[data-count]').forEach(el => countIO.observe(el));
+
+/* ===== Case study modal ===== */
+const CASES = {
+  myer: {
+    client: 'Myer · Retail · 2024 – present',
+    title: 'Turning a retail icon into a search category leader.',
+    img: 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=1800&q=75',
+    challenge: "Myer needed to compete with pure-play eCommerce players who'd been eating their lunch in organic search for years. Rankings had stalled, technical debt had accumulated, and the content team wasn't being briefed on what would actually move rankings.",
+    solution: "We stitched together a technical SEO rebuild, a content strategy keyed to commercial intent, and a digital PR programme that earned links from tier-1 Australian publishers. Every recommendation was modelled against forecast revenue before it shipped.",
+    tags: ['SEO', 'Digital PR', 'Content', 'Analytics'],
+    results: [
+      { v: '+58%', l: 'Organic search revenue (YoY)' },
+      { v: '+180', l: 'Terms ranking page 1' },
+      { v: '#1', l: 'For 41 priority category terms' }
+    ]
+  },
+  crocs: {
+    client: 'Crocs · Footwear · 2023',
+    title: 'A campaign built for the feed, not the brief.',
+    img: 'https://images.unsplash.com/photo-1520639888713-7851133b1ed0?w=1800&q=75',
+    challenge: "Crocs wanted to land a national moment without the throwaway social churn — something that actually retained brand meaning three weeks after launch.",
+    solution: "We led with a simple creative platform, cut it into a dozen format-native pieces, and shipped through a paid social plan instrumented end-to-end for CRM pickup.",
+    tags: ['Creative', 'Paid Social', 'Production'],
+    results: [
+      { v: '3.2×', l: 'Engagement vs. benchmark' },
+      { v: '11M', l: 'Organic impressions' },
+      { v: '+22%', l: 'Brand search lift' }
+    ]
+  },
+  newbalance: {
+    client: 'New Balance · Footwear · 2024',
+    title: 'Every dollar accounted for across 14 markets.',
+    img: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=1800&q=75',
+    challenge: "Fragmented attribution across agencies and markets meant nobody could answer 'is this working?' without a three-hour call.",
+    solution: "Consolidated measurement into a single MMM layer with platform-level validation, feeding an auction-time value signal into paid media bidding.",
+    tags: ['Data', 'Paid Media', 'Analytics'],
+    results: [
+      { v: '-34%', l: 'Blended CPA' },
+      { v: '+19%', l: 'Paid media ROI' },
+      { v: '14', l: 'Markets unified' }
+    ]
+  },
+  a2: {
+    client: 'a2 Milk · FMCG · 2024',
+    title: 'From data lake to decision-ready, in one quarter.',
+    img: 'https://images.unsplash.com/photo-1563636619-e9143da7973b?w=1800&q=75',
+    challenge: "The team had invested heavily in a data lake but couldn't get insights into the hands of marketers fast enough to matter.",
+    solution: "We rebuilt the semantic layer, shipped decision-grade dashboards, and trained the marketing team on self-serve querying patterns they'd actually use.",
+    tags: ['Data', 'Analytics', 'Enablement'],
+    results: [
+      { v: '4×', l: 'Faster time-to-insight' },
+      { v: '87%', l: 'Team self-serve rate' },
+      { v: '1 Q', l: 'End-to-end delivery' }
+    ]
+  },
+  tlc: {
+    client: 'TLC Healthcare · Aged Care · 2025',
+    title: 'Rankings that translate to real admissions.',
+    img: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1800&q=75',
+    challenge: "Aged care is a deeply local, deeply considered purchase. Generic SEO wasn't moving the needle on admissions enquiries.",
+    solution: "We built a location-first content architecture, tuned for the long-tail questions families actually ask, with clinical signals reviewed by TLC specialists.",
+    tags: ['SEO', 'Content', 'Local'],
+    results: [
+      { v: '#1', l: 'For 180 target terms' },
+      { v: '+71%', l: 'Admissions enquiries' },
+      { v: '9', l: 'Locations scaled' }
+    ]
+  },
+  oes: {
+    client: 'OES · EdTech · 2024',
+    title: 'AI-powered PPC, tuned for enrolment margin.',
+    img: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1800&q=75',
+    challenge: "Paid search was optimised to lead volume, not to actual enrolled-and-retained students — the two were increasingly uncorrelated.",
+    solution: "Built a custom value signal that weighted leads by predicted enrolment probability and course margin, then fed it into Google's bidding via offline conversion import.",
+    tags: ['PPC', 'AI', 'Data'],
+    results: [
+      { v: '+489%', l: 'Attributed revenue' },
+      { v: '+61%', l: 'Enrolment rate' },
+      { v: '-28%', l: 'Cost per enrolment' }
+    ]
+  }
+};
+
+const modal = document.getElementById('caseModal');
+document.querySelectorAll('[data-case]').forEach(el => {
+  el.addEventListener('click', () => {
+    const c = CASES[el.dataset.case];
+    if (!c) return;
+    document.getElementById('modalHero').style.backgroundImage = `url('${c.img}')`;
+    document.getElementById('modalClient').textContent = c.client;
+    document.getElementById('modalTitle').textContent = c.title;
+    document.getElementById('modalChallenge').textContent = c.challenge;
+    document.getElementById('modalSolution').textContent = c.solution;
+    document.getElementById('modalTags').innerHTML = c.tags.map(t => `<span>${t}</span>`).join('');
+    document.getElementById('modalResults').innerHTML = c.results.map(r => `<div class="modal-stat">${r.v}</div><div class="modal-stat-label">${r.l}</div>`).join('');
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  });
+});
+function closeModal(){ modal.classList.remove('open'); document.body.style.overflow = ''; }
+
+/* Insights click -> reuse as a simple case-like modal with minimal content */
+document.querySelectorAll('[data-article]').forEach(el => {
+  el.addEventListener('click', () => {
+    const title = el.querySelector('.insight-title').textContent;
+    document.getElementById('modalHero').style.backgroundImage = `linear-gradient(135deg, #1a1a1a, #0a0a0a)`;
+    document.getElementById('modalClient').textContent = 'Insight · Jaywing';
+    document.getElementById('modalTitle').textContent = title;
+    document.getElementById('modalChallenge').textContent = "This would open the full article. In this prototype, insights share the case-detail pattern for consistency.";
+    document.getElementById('modalSolution').textContent = "The real article would contain the full write-up, author bio, and related pieces.";
+    document.getElementById('modalTags').innerHTML = ['AI Search','Data','Strategy'].map(t => `<span>${t}</span>`).join('');
+    document.getElementById('modalResults').innerHTML = '<div class="modal-stat-label" style="color: var(--ink-dim);">8 min read · by the Jaywing team</div>';
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  });
+});
+
+/* ===== Contact modal ===== */
+const contactModal = document.getElementById('contactModal');
+function openContact(){ contactModal.classList.add('open'); document.body.style.overflow = 'hidden'; document.getElementById('contactForm').style.display=''; document.getElementById('formSuccess').style.display='none'; }
+function closeContact(){ contactModal.classList.remove('open'); document.body.style.overflow = ''; }
+function submitContact(e){
+  e.preventDefault();
+  const f = e.target;
+  const email = f.email.value;
+  const errEmail = document.getElementById('err-email');
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { errEmail.classList.add('show'); return false; }
+  errEmail.classList.remove('show');
+  document.getElementById('contactForm').style.display='none';
+  document.getElementById('formSuccess').style.display='';
+  return false;
+}
+
+/* ESC closes modals */
+window.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeModal(); closeContact(); }
+});
+
+/* Smooth scroll for nav anchors */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const id = a.getAttribute('href');
+    if (id.length > 1 && document.querySelector(id)) {
+      e.preventDefault();
+      const target = document.querySelector(id);
+      const top = target.getBoundingClientRect().top + window.scrollY - 60;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }
+  });
+});
+</script>
+</body>
+</html>
